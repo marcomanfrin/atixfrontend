@@ -35,7 +35,7 @@ import {
   BarChart3
 } from 'lucide-react';
 import { Client, Plant, Work } from '@/types';
-import { useWorks, useClients, useAllPlants, useUsersByType, useTickets } from '@/hooks/api';
+import { useWorks, useAllClients, useAllPlants, useUsersByType, useTickets } from '@/hooks/api';
 import { LoadingSpinner } from '@/components/LoadingSpinner';
 import { formatDate } from '@/lib/date';
 import { StatusBadge, getWorkStatusBadgeKey } from '@/components/ui/status-badge';
@@ -212,14 +212,14 @@ export default function WorksPage() {
   const { data: scheduledWorksData } = useWorks(scheduledCountParams);
   const { data: openWorksData } = useWorks(openCountParams);
   const { data: closedWorksData } = useWorks(closedCountParams);
-  const { data: clientsData } = useClients(0, 100);
+  const { data: clientsData } = useAllClients();
   const { data: plantsData } = useAllPlants();
   const { data: sellersData } = useUsersByType('SELLER');
   const { data: techniciansData } = useUsersByType('TECHNICIAN');
   const { data: ticketsData } = useTickets();
 
   const works = worksData?.content || [];
-  const clients = clientsData?.content || [];
+  const clients = clientsData || [];
   const plants = plantsData || [];
   const sellers = sellersData || [];
   const technicians = techniciansData || [];

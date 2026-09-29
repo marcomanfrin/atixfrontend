@@ -1,21 +1,33 @@
-import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
+import { useQuery, useMutation, useQueryClient, keepPreviousData } from '@tanstack/react-query';
 import { clientsApi } from '@/lib/api';
-import { Client, PaginatedResponse } from '@/types';
+import { Client, ClientType, PaginatedResponse } from '@/types';
 
 // Query key factory
 export const clientsKeys = {
   all: ['clients'] as const,
   lists: () => [...clientsKeys.all, 'list'] as const,
-  list: (page?: number, size?: number) => [...clientsKeys.lists(), { page, size }] as const,
+  list: (page?: number, size?: number, search?: string, type?: ClientType) =>
+    [...clientsKeys.lists(), { page, size, search, type }] as const,
+  // Nested under lists() so mutations invalidating lists() also refresh dropdowns
+  allList: () => [...clientsKeys.lists(), 'all'] as const,
   details: () => [...clientsKeys.all, 'detail'] as const,
   detail: (id: string) => [...clientsKeys.details(), id] as const,
 };
 
 // Fetch all clients with pagination
-export function useClients(page = 0, size = 20) {
+export function useClients(page = 0, size = 20, search?: string, type?: ClientType) {
   return useQuery<PaginatedResponse<Client>>({
-    queryKey: clientsKeys.list(page, size),
-    queryFn: () => clientsApi.getAll(page, size),
+    queryKey: clientsKeys.list(page, size, search, type),
+    queryFn: () => clientsApi.getAll(page, size, search, type),
+    placeholderData: keepPreviousData,
+  });
+}
+
+// Fetch all clients, no pagination (for dropdowns)
+export function useAllClients() {
+  return useQuery<Client[]>({
+    queryKey: clientsKeys.allList(),
+    queryFn: () => clientsApi.getAllList(),
   });
 }
 

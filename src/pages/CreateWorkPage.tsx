@@ -24,7 +24,7 @@ import {
 import { ArrowLeft, Plus, Save } from 'lucide-react';
 import { Client, Plant, SellerUser } from '@/types';
 import { useToast } from '@/hooks/use-toast';
-import { useCreateWork, useClients, useAllPlants, useUsersByType, useCreateClient, useCreatePlant } from '@/hooks/api';
+import { useCreateWork, useAllClients, useAllPlants, useUsersByType, useCreateClient, useCreatePlant } from '@/hooks/api';
 import { LoadingSpinner } from '@/components/LoadingSpinner';
 import { workSchema, ValidationErrors, WorkFormData } from '@/lib/validations';
 
@@ -38,7 +38,7 @@ export default function CreateWorkPage() {
   const ticketState = location.state as { fromTicket?: string; ticketName?: string; ticketDescription?: string } | null;
 
   // Fetch data from API
-  const { data: clientsData, isLoading: loadingClients } = useClients(0, 100);
+  const { data: clientsData, isLoading: loadingClients } = useAllClients();
   const { data: plantsData, isLoading: loadingPlants } = useAllPlants();
   const { data: sellersData, isLoading: loadingSellers } = useUsersByType('SELLER');
 
@@ -46,7 +46,7 @@ export default function CreateWorkPage() {
   const createClient = useCreateClient();
   const createPlant = useCreatePlant();
 
-  const clients = clientsData?.content || [];
+  const clients = clientsData || [];
   const plants = plantsData || [];
   const sellers = sellersData || [];
 

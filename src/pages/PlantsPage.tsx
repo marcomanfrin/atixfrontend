@@ -6,20 +6,13 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
-import {
-  Pagination,
-  PaginationContent,
-  PaginationItem,
-  PaginationLink,
-  PaginationNext,
-  PaginationPrevious,
-} from '@/components/ui/pagination';
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { useToast } from '@/hooks/use-toast';
 import { usePlants, useCreatePlant } from '@/hooks/api';
 import { LoadingSpinner } from '@/components/LoadingSpinner';
+import { ListPagination } from '@/components/ListPagination';
 import { plantSchema, ValidationErrors, PlantFormData } from '@/lib/validations';
 
 const PAGE_SIZE = 50;
@@ -278,89 +271,21 @@ export default function PlantsPage() {
           </div>
           {totalPages > 1 && (
             <div className="mt-4">
-              <PlantsPagination
+              <ListPagination
                 currentPage={currentPage}
                 totalPages={totalPages}
-                totalElements={totalElements}
-                pageSize={PAGE_SIZE}
                 onPageChange={setCurrentPage}
+                summary={t('pagination.showing', {
+                  start: currentPage * PAGE_SIZE + 1,
+                  end: Math.min((currentPage + 1) * PAGE_SIZE, totalElements),
+                  total: totalElements,
+                })}
               />
             </div>
           )}
         </CardContent>
       </Card>
 
-    </div>
-  );
-}
-
-function PlantsPagination({
-  currentPage,
-  totalPages,
-  totalElements,
-  pageSize,
-  onPageChange,
-}: {
-  currentPage: number;
-  totalPages: number;
-  totalElements: number;
-  pageSize: number;
-  onPageChange: (page: number) => void;
-}) {
-  const { t } = useTranslation('plants');
-  const startItem = currentPage * pageSize + 1;
-  const endItem = Math.min((currentPage + 1) * pageSize, totalElements);
-
-  const getPageNumbers = () => {
-    const pages: number[] = [];
-    const maxVisible = 5;
-
-    if (totalPages <= maxVisible) {
-      for (let i = 0; i < totalPages; i++) pages.push(i);
-    } else {
-      if (currentPage < 3) {
-        for (let i = 0; i < Math.min(maxVisible, totalPages); i++) pages.push(i);
-      } else if (currentPage > totalPages - 4) {
-        for (let i = totalPages - maxVisible; i < totalPages; i++) pages.push(i);
-      } else {
-        for (let i = currentPage - 2; i <= currentPage + 2; i++) pages.push(i);
-      }
-    }
-    return pages;
-  };
-
-  return (
-    <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
-      <p className="text-sm text-muted-foreground">
-        {t('pagination.showing', { start: startItem, end: endItem, total: totalElements })}
-      </p>
-      <Pagination>
-        <PaginationContent>
-          <PaginationItem>
-            <PaginationPrevious
-              onClick={() => onPageChange(Math.max(0, currentPage - 1))}
-              className={currentPage === 0 ? 'pointer-events-none opacity-50' : 'cursor-pointer'}
-            />
-          </PaginationItem>
-          {getPageNumbers().map((page) => (
-            <PaginationItem key={page}>
-              <PaginationLink
-                onClick={() => onPageChange(page)}
-                isActive={currentPage === page}
-                className="cursor-pointer"
-              >
-                {page + 1}
-              </PaginationLink>
-            </PaginationItem>
-          ))}
-          <PaginationItem>
-            <PaginationNext
-              onClick={() => onPageChange(Math.min(totalPages - 1, currentPage + 1))}
-              className={currentPage >= totalPages - 1 ? 'pointer-events-none opacity-50' : 'cursor-pointer'}
-            />
-          </PaginationItem>
-        </PaginationContent>
-      </Pagination>
     </div>
   );
 }

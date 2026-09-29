@@ -26,6 +26,9 @@
     "atix": "ATIX",
     "final": "Final"
   },
+  "pagination": {
+    "showing": "Showing {{start}}-{{end}} of {{total}} clients"
+  },
   "list": {
     "title": "All Clients",
     "description": "A list of all clients in the system"

@@ -7,6 +7,8 @@ export const plantsKeys = {
   all: ['plants'] as const,
   lists: () => [...plantsKeys.all, 'list'] as const,
   list: (page?: number, size?: number, search?: string) => [...plantsKeys.lists(), { page, size, search }] as const,
+  // Nested under lists() so mutations invalidating lists() also refresh dropdowns
+  allList: () => [...plantsKeys.lists(), 'all'] as const,
   details: () => [...plantsKeys.all, 'detail'] as const,
   detail: (id: string) => [...plantsKeys.details(), id] as const,
 };
@@ -23,7 +25,7 @@ export function usePlants(page = 0, size = 20, search?: string) {
 // Fetch all plants, no pagination (for dropdowns)
 export function useAllPlants() {
   return useQuery<Plant[]>({
-    queryKey: [...plantsKeys.all, 'allList'] as const,
+    queryKey: plantsKeys.allList(),
     queryFn: () => plantsApi.getAllList(),
   });
 }

@@ -214,8 +214,17 @@ export const usersApi = {
 // Clients API
 export const clientsApi = {
   // F2: sort clients alphabetically by name
-  getAll: (page = 0, size = 20) =>
-    apiRequest<any>(`/clients?page=${page}&size=${size}&sort=name,asc`),
+  getAll: (page = 0, size = 20, search?: string, type?: string) => {
+    let url = `/clients?page=${page}&size=${size}&sort=name,asc`;
+    if (search) {
+      url += `&search=${encodeURIComponent(search)}`;
+    }
+    if (type) {
+      url += `&type=${type}`;
+    }
+    return apiRequest<any>(url);
+  },
+  getAllList: () => apiRequest<any[]>('/clients/all'),
   getById: (id: string) => apiRequest<any>(`/clients/${id}`),
   create: (data: { name: string; type: string }) =>
     apiRequest<any>('/clients', {

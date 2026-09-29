@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { Plus, Search, Building2, User } from 'lucide-react';
@@ -11,28 +11,44 @@ import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, D
 import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { useToast } from '@/hooks/use-toast';
-import { Client, ClientType } from '@/types';
+import { ClientType } from '@/types';
 import { useClients, useCreateClient } from '@/hooks/api';
 import { LoadingSpinner } from '@/components/LoadingSpinner';
+import { ListPagination } from '@/components/ListPagination';
 import { clientSchema, ValidationErrors, ClientFormData } from '@/lib/validations';
+
+const PAGE_SIZE = 50;
 
 export default function ClientsPage() {
   const { toast } = useToast();
   const navigate = useNavigate();
   const { t } = useTranslation('clients');
+  const [currentPage, setCurrentPage] = useState(0);
   const [searchTerm, setSearchTerm] = useState('');
+  const [debouncedSearch, setDebouncedSearch] = useState('');
   const [isCreateOpen, setIsCreateOpen] = useState(false);
   const [newClient, setNewClient] = useState({ name: '', type: 'ATIX' as ClientType });
   const [formErrors, setFormErrors] = useState<ValidationErrors<ClientFormData>>({});
 
-  // Fetch clients
-  const { data: clientsData, isLoading, error } = useClients(0, 100);
+  // Debounce search (300ms) and reset to first page
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setDebouncedSearch(searchTerm.trim());
+      setCurrentPage(0);
+    }, 300);
+    return () => clearTimeout(timer);
+  }, [searchTerm]);
+
+  // Fetch clients with server-side search
+  const { data: clientsData, isLoading, error } = useClients(currentPage, PAGE_SIZE, debouncedSearch);
+  // Per-type counts, independent of the search (size 1: only totalElements is needed)
+  const { data: atixData } = useClients(0, 1, undefined, 'ATIX');
+  const { data: finalData } = useClients(0, 1, undefined, 'FINAL');
   const createClient = useCreateClient();
 
   const clients = clientsData?.content || [];
-  const filteredClients = clients.filter((client: Client) =>
-    client.name.toLowerCase().includes(searchTerm.toLowerCase())
-  );
+  const totalPages = clientsData?.totalPages ?? 0;
+  const totalElements = clientsData?.totalElements ?? 0;
 
   const handleCreateClient = () => {
     const result = clientSchema.safeParse(newClient);
@@ -92,8 +108,8 @@ export default function ClientsPage() {
     </div>
   );
 
-  const atixCount = clients.filter((c: Client) => c.type === 'ATIX').length;
-  const finalCount = clients.filter((c: Client) => c.type === 'FINAL').length;
+  const atixCount = atixData?.totalElements ?? 0;
+  const finalCount = finalData?.totalElements ?? 0;
 
   return (
     <div className="space-y-6">
@@ -161,7 +177,7 @@ export default function ClientsPage() {
             <User className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">{clients.length}</div>
+            <div className="text-2xl font-bold">{atixCount + finalCount}</div>
           </CardContent>
         </Card>
         <Card>
@@ -210,7 +226,7 @@ export default function ClientsPage() {
                 </TableRow>
               </TableHeader>
               <TableBody>
-                {filteredClients.map((client) => (
+                {clients.map((client) => (
                   <TableRow
                     key={client.id}
                     className="cursor-pointer hover:bg-muted/50"
@@ -228,7 +244,7 @@ export default function ClientsPage() {
                     </TableCell>
                   </TableRow>
                 ))}
-                {filteredClients.length === 0 && (
+                {clients.length === 0 && (
                   <TableRow>
                     <TableCell colSpan={2} className="text-center text-muted-foreground">
                       {t('messages.noClients')}
@@ -238,6 +254,20 @@ export default function ClientsPage() {
               </TableBody>
             </Table>
           </div>
+          {totalPages > 1 && (
+            <div className="mt-4">
+              <ListPagination
+                currentPage={currentPage}
+                totalPages={totalPages}
+                onPageChange={setCurrentPage}
+                summary={t('pagination.showing', {
+                  start: currentPage * PAGE_SIZE + 1,
+                  end: Math.min((currentPage + 1) * PAGE_SIZE, totalElements),
+                  total: totalElements,
+                })}
+              />
+            </div>
+          )}
         </CardContent>
       </Card>
 

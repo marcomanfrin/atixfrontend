@@ -125,6 +125,7 @@ export interface Ticket {
   status: TicketStatus;
   createdAt: string;
   orderNumber?: Work;
+  orderNumberId?: string | null; // id of the work created from this ticket, if any
 }
 
 // Worksite Reference

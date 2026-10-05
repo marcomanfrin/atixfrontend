@@ -57,14 +57,16 @@
     "senderEmail": "Email mittente",
     "status": "Stato",
     "createdAt": "Creato il",
-    "updatedAt": "Aggiornato il"
+    "updatedAt": "Aggiornato il",
+    "linkedWork": "Lavoro collegato"
   },
   "actions": {
     "edit": "Modifica",
     "delete": "Elimina",
     "changeStatus": "Cambia stato",
     "createWork": "Crea lavoro",
-    "createWorkFromTicket": "Crea lavoro dal ticket"
+    "createWorkFromTicket": "Crea lavoro dal ticket",
+    "openWork": "Apri lavoro"
   },
   "dialogs": {
     "deleteTitle": "Elimina ticket",

@@ -2,6 +2,17 @@
 // This will connect to your backend
 
 import { PaginatedResponse } from '@/types';
+import type {
+  ChecklistTemplateItem,
+  PublicRapportinoPreview,
+  RapportiniFilters,
+  RapportinoCreateRequest,
+  RapportinoDetail,
+  RapportinoListItem,
+  RapportinoSignRequest,
+  RapportinoUpdateRequest,
+  SignatureRequestCreated,
+} from '@/types/rapportino';
 import * as Sentry from '@sentry/react';
 import i18n from '@/lib/i18n';
 
@@ -558,4 +569,96 @@ export const attachmentsApi = {
 
   delete: (attachmentId: string) =>
     apiRequest<void>(`/attachments/${attachmentId}`, { method: 'DELETE' }),
+};
+
+// Rapportini API (authenticated)
+export const rapportiniApi = {
+  getAll: (filters: RapportiniFilters = {}) => {
+    const searchParams = new URLSearchParams();
+    Object.entries(filters).forEach(([key, value]) => {
+      if (value !== undefined && value !== null && value !== '') {
+        searchParams.append(key, String(value));
+      }
+    });
+    const query = searchParams.toString();
+    return apiRequest<PaginatedResponse<RapportinoListItem>>(`/rapportini${query ? `?${query}` : ''}`);
+  },
+  getById: (id: string) => apiRequest<RapportinoDetail>(`/rapportini/${id}`),
+  getChecklistTemplate: () => apiRequest<ChecklistTemplateItem[]>('/rapportini/checklist-template'),
+  create: (data: RapportinoCreateRequest) =>
+    apiRequest<RapportinoDetail>('/rapportini', {
+      method: 'POST',
+      body: JSON.stringify(data),
+    }),
+  update: (id: string, data: RapportinoUpdateRequest) =>
+    apiRequest<RapportinoDetail>(`/rapportini/${id}`, {
+      method: 'PATCH',
+      body: JSON.stringify(data),
+    }),
+  delete: (id: string) =>
+    apiRequest<void>(`/rapportini/${id}`, { method: 'DELETE' }),
+  sign: (id: string, data: RapportinoSignRequest) =>
+    apiRequest<RapportinoDetail>(`/rapportini/${id}/sign`, {
+      method: 'POST',
+      body: JSON.stringify(data),
+    }),
+  requestSignature: (id: string, expiresInMinutes: number) =>
+    apiRequest<SignatureRequestCreated>(`/rapportini/${id}/signature-request`, {
+      method: 'POST',
+      body: JSON.stringify({ expiresInMinutes }),
+    }),
+  revokeSignatureRequest: (id: string) =>
+    apiRequest<RapportinoDetail>(`/rapportini/${id}/signature-request/revoke`, { method: 'POST' }),
+  void: (id: string) =>
+    apiRequest<RapportinoDetail>(`/rapportini/${id}/void`, { method: 'POST' }),
+
+  // The PDF is served only through the authenticated endpoint (never a storage URL)
+  getPdfBlob: async (id: string): Promise<Blob> => {
+    const token = getAuthToken();
+    const response = await fetch(`${API_BASE_URL}/rapportini/${id}/pdf`, {
+      headers: {
+        ...(token && { Authorization: `Bearer ${token}` }),
+      },
+    });
+    if (!response.ok) {
+      throw new Error(i18n.t('reports:messages.pdfError', { defaultValue: 'Unable to download the document' }));
+    }
+    return response.blob();
+  },
+};
+
+// Public signing API: used by the unauthenticated /sign/:token page.
+// Deliberately separate from apiRequest: it never attaches the JWT and never redirects to /login.
+export class PublicSigningError extends Error {
+  constructor(public readonly kind: 'invalid' | 'rateLimited' | 'validation' | 'server') {
+    super(kind);
+  }
+}
+
+const publicRequest = async <T>(endpoint: string, options: RequestInit = {}): Promise<T> => {
+  const response = await fetch(`${API_BASE_URL}${endpoint}`, {
+    ...options,
+    credentials: 'omit',
+    headers: {
+      'Content-Type': 'application/json',
+      ...options.headers,
+    },
+  });
+  if (!response.ok) {
+    if (response.status === 404) throw new PublicSigningError('invalid');
+    if (response.status === 429) throw new PublicSigningError('rateLimited');
+    if (response.status === 400) throw new PublicSigningError('validation');
+    throw new PublicSigningError('server');
+  }
+  return response.json() as Promise<T>;
+};
+
+export const publicSigningApi = {
+  getPreview: (token: string) =>
+    publicRequest<PublicRapportinoPreview>(`/public/rapportini/sign/${encodeURIComponent(token)}`),
+  sign: (token: string, data: RapportinoSignRequest) =>
+    publicRequest<{ status: string }>(`/public/rapportini/sign/${encodeURIComponent(token)}`, {
+      method: 'POST',
+      body: JSON.stringify(data),
+    }),
 };

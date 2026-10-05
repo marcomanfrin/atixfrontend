@@ -28,6 +28,10 @@ const WorksiteReferencesPage = lazy(() => import("./pages/WorksiteReferencesPage
 const WorksiteReferenceDetailPage = lazy(() => import("./pages/WorksiteReferenceDetailPage"));
 const ProfilePage = lazy(() => import("./pages/ProfilePage"));
 const AccessLogsPage = lazy(() => import("./pages/AccessLogsPage"));
+const RapportiniPage = lazy(() => import("./pages/RapportiniPage"));
+const RapportinoDetailPage = lazy(() => import("./pages/RapportinoDetailPage"));
+const RapportinoWizardPage = lazy(() => import("./pages/RapportinoWizardPage"));
+const PublicSignPage = lazy(() => import("./pages/PublicSignPage"));
 const NotFound = lazy(() => import("./pages/NotFound"));
 
 const queryClient = new QueryClient({
@@ -69,46 +73,65 @@ const App = () => (
   >
     <QueryClientProvider client={queryClient}>
       <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
-        <AuthProvider>
-          <TooltipProvider>
-            <Toaster />
-            <Sonner />
-            <BrowserRouter>
-              <Routes>
-                <Route path="/login" element={<LoginPage />} />
-                <Route
-                  path="/*"
-                  element={
-                    <ProtectedRoute>
-                      <AppLayout>
-                        <Suspense fallback={<LoadingSpinner />}>
-                          <Routes>
-                            <Route path="/" element={<Dashboard />} />
-                            <Route path="/tickets" element={<TicketsPage />} />
-                            <Route path="/tickets/:id" element={<TicketDetailPage />} />
-                            <Route path="/works" element={<WorksPage />} />
-                            <Route path="/works/new" element={<CreateWorkPage />} />
-                            <Route path="/works/:id" element={<WorkDetailPage />} />
-                            <Route path="/users" element={<UsersPage />} />
-                            <Route path="/clients" element={<ClientsPage />} />
-                            <Route path="/clients/:id" element={<ClientDetailPage />} />
-                            <Route path="/plants" element={<PlantsPage />} />
-                            <Route path="/plants/:id" element={<PlantDetailPage />} />
-                            <Route path="/worksite-references" element={<WorksiteReferencesPage />} />
-                            <Route path="/worksite-references/:id" element={<WorksiteReferenceDetailPage />} />
-                            <Route path="/profile" element={<ProfilePage />} />
-                            <Route path="/access-logs" element={<AccessLogsPage />} />
-                            <Route path="*" element={<NotFound />} />
-                          </Routes>
-                        </Suspense>
-                      </AppLayout>
-                    </ProtectedRoute>
-                  }
-                />
-              </Routes>
-            </BrowserRouter>
-          </TooltipProvider>
-        </AuthProvider>
+        <TooltipProvider>
+          <Toaster />
+          <Sonner />
+          <BrowserRouter>
+            <Routes>
+              {/* Customer signing link: outside AuthProvider, so no session logic (and no /login redirect) runs here */}
+              <Route
+                path="/sign/:token"
+                element={
+                  <Suspense fallback={<LoadingSpinner />}>
+                    <PublicSignPage />
+                  </Suspense>
+                }
+              />
+              <Route
+                path="/*"
+                element={
+                  <AuthProvider>
+                    <Routes>
+                      <Route path="/login" element={<LoginPage />} />
+                      <Route
+                        path="/*"
+                        element={
+                          <ProtectedRoute>
+                            <AppLayout>
+                              <Suspense fallback={<LoadingSpinner />}>
+                                <Routes>
+                                  <Route path="/" element={<Dashboard />} />
+                                  <Route path="/tickets" element={<TicketsPage />} />
+                                  <Route path="/tickets/:id" element={<TicketDetailPage />} />
+                                  <Route path="/works" element={<WorksPage />} />
+                                  <Route path="/works/new" element={<CreateWorkPage />} />
+                                  <Route path="/works/:id" element={<WorkDetailPage />} />
+                                  <Route path="/reports" element={<RapportiniPage />} />
+                                  <Route path="/reports/:id" element={<RapportinoDetailPage />} />
+                                  <Route path="/reports/:id/edit" element={<RapportinoWizardPage />} />
+                                  <Route path="/users" element={<UsersPage />} />
+                                  <Route path="/clients" element={<ClientsPage />} />
+                                  <Route path="/clients/:id" element={<ClientDetailPage />} />
+                                  <Route path="/plants" element={<PlantsPage />} />
+                                  <Route path="/plants/:id" element={<PlantDetailPage />} />
+                                  <Route path="/worksite-references" element={<WorksiteReferencesPage />} />
+                                  <Route path="/worksite-references/:id" element={<WorksiteReferenceDetailPage />} />
+                                  <Route path="/profile" element={<ProfilePage />} />
+                                  <Route path="/access-logs" element={<AccessLogsPage />} />
+                                  <Route path="*" element={<NotFound />} />
+                                </Routes>
+                              </Suspense>
+                            </AppLayout>
+                          </ProtectedRoute>
+                        }
+                      />
+                    </Routes>
+                  </AuthProvider>
+                }
+              />
+            </Routes>
+          </BrowserRouter>
+        </TooltipProvider>
       </ThemeProvider>
     </QueryClientProvider>
   </Sentry.ErrorBoundary>

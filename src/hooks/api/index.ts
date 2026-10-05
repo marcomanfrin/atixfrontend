@@ -9,3 +9,4 @@ export * from './useDashboard';
 export * from './useWorksiteReferences';
 export * from './useAttachments';
 export * from './useAccessLogs';
+export * from './useRapportini';

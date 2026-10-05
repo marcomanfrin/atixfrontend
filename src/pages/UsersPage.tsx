@@ -45,7 +45,9 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { useToast } from '@/hooks/use-toast';
 import { useAuth } from '@/contexts/AuthContext';
 import { UserRole, UserType } from '@/types';
-import { useUsers, useCreateUser, useUpdateUser, useDeleteUser } from '@/hooks/api';
+import { useUsers, useCreateUser, useUpdateUser, useDeleteUser, useUpdateCalendarColor } from '@/hooks/api';
+import { ColorPicker } from '@/components/calendar/ColorPicker';
+import { colorOrFallback, isHexColor } from '@/lib/color';
 import { LoadingSpinner } from '@/components/LoadingSpinner';
 import { userSchema, validateForm, ValidationErrors, UserFormData } from '@/lib/validations';
 
@@ -56,18 +58,20 @@ interface UserData {
   email: string;
   role: UserRole;
   type: UserType;
+  calendarColor?: string;
 }
 
 export default function UsersPage() {
   const { toast } = useToast();
   const { canManageUsers } = useAuth();
-  const { t } = useTranslation('users');
+  const { t } = useTranslation(['users', 'calendar']);
   const [searchQuery, setSearchQuery] = useState('');
 
   // Fetch users
   const { data: usersData, isLoading, error } = useUsers();
   const createUser = useCreateUser();
   const updateUser = useUpdateUser();
+  const updateCalendarColor = useUpdateCalendarColor();
   const deleteUser = useDeleteUser();
 
   const users = usersData || [];
@@ -157,31 +161,43 @@ export default function UsersPage() {
     });
   };
 
-  const handleEditUser = () => {
+  const handleEditUser = async () => {
     if (!editingUser) return;
 
-    updateUser.mutate(
-      { id: editingUser.id, data: editingUser },
-      {
-        onSuccess: () => {
-          toast({
-            title: t('common:titles.updated'),
-            description: t('messages.updateSuccessDescription', {
-              name: `${editingUser.firstName} ${editingUser.lastName}`,
-            }),
-          });
-          setIsEditDialogOpen(false);
-          setEditingUser(null);
-        },
-        onError: (error: any) => {
-          toast({
-            title: t('common:titles.error'),
-            description: error.message,
-            variant: 'destructive',
-          });
-        }
+    const { calendarColor, ...userData } = editingUser;
+    const originalColor = users.find((u) => u.id === editingUser.id)?.calendarColor ?? '';
+    const colorChanged = !!calendarColor && calendarColor.toUpperCase() !== originalColor.toUpperCase();
+
+    if (colorChanged && !isHexColor(calendarColor)) {
+      toast({
+        title: t('common:titles.validationError'),
+        description: t('calendar:color.invalid'),
+        variant: 'destructive',
+      });
+      return;
+    }
+
+    try {
+      // Colour has its own endpoint (allowed to ADMIN/OWNER on any user)
+      if (colorChanged) {
+        await updateCalendarColor.mutateAsync({ id: editingUser.id, calendarColor });
       }
-    );
+      await updateUser.mutateAsync({ id: editingUser.id, data: userData });
+      toast({
+        title: t('common:titles.updated'),
+        description: t('messages.updateSuccessDescription', {
+          name: `${editingUser.firstName} ${editingUser.lastName}`,
+        }),
+      });
+      setIsEditDialogOpen(false);
+      setEditingUser(null);
+    } catch (error) {
+      toast({
+        title: t('common:titles.error'),
+        description: error instanceof Error ? error.message : String(error),
+        variant: 'destructive',
+      });
+    }
   };
 
   const handleDeleteUser = (userId: string) => {
@@ -451,8 +467,13 @@ export default function UsersPage() {
                           </AvatarFallback>
                         </Avatar>
                         <div className="min-w-0">
-                          <div className="font-medium text-sm sm:text-base truncate">
-                            {user.firstName} {user.lastName}
+                          <div className="flex items-center gap-2 font-medium text-sm sm:text-base">
+                            <span
+                              className="h-2.5 w-2.5 shrink-0 rounded-full border border-black/10"
+                              style={{ backgroundColor: colorOrFallback(user.calendarColor) }}
+                              title={t('calendar:color.title')}
+                            />
+                            <span className="truncate">{user.firstName} {user.lastName}</span>
                           </div>
                           <div className="text-xs text-muted-foreground truncate sm:hidden">
                             {user.email}
@@ -566,6 +587,13 @@ export default function UsersPage() {
                     <SelectItem value="OWNER">{t('roles.OWNER')}</SelectItem>
                   </SelectContent>
                 </Select>
+              </div>
+              <div className="space-y-2">
+                <Label>{t('calendar:color.title')}</Label>
+                <ColorPicker
+                  value={editingUser.calendarColor ?? ''}
+                  onChange={(calendarColor) => setEditingUser({ ...editingUser, calendarColor })}
+                />
               </div>
             </div>
           )}

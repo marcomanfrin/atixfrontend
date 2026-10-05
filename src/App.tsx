@@ -28,6 +28,7 @@ const WorksiteReferencesPage = lazy(() => import("./pages/WorksiteReferencesPage
 const WorksiteReferenceDetailPage = lazy(() => import("./pages/WorksiteReferenceDetailPage"));
 const ProfilePage = lazy(() => import("./pages/ProfilePage"));
 const AccessLogsPage = lazy(() => import("./pages/AccessLogsPage"));
+const CalendarPage = lazy(() => import("./pages/CalendarPage"));
 const NotFound = lazy(() => import("./pages/NotFound"));
 
 const queryClient = new QueryClient({
@@ -84,6 +85,7 @@ const App = () => (
                         <Suspense fallback={<LoadingSpinner />}>
                           <Routes>
                             <Route path="/" element={<Dashboard />} />
+                            <Route path="/calendar" element={<CalendarPage />} />
                             <Route path="/tickets" element={<TicketsPage />} />
                             <Route path="/tickets/:id" element={<TicketDetailPage />} />
                             <Route path="/works" element={<WorksPage />} />

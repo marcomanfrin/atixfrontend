@@ -18,6 +18,7 @@ import validationIT from '@/locales/it/validation.json';
 import notfoundIT from '@/locales/it/notfound.json';
 import attachmentsIT from '@/locales/it/attachments.json';
 import accessLogsIT from '@/locales/it/accessLogs.json';
+import calendarIT from '@/locales/it/calendar.json';
 
 // Import English translations
 import commonEN from '@/locales/en/common.json';
@@ -35,6 +36,7 @@ import validationEN from '@/locales/en/validation.json';
 import notfoundEN from '@/locales/en/notfound.json';
 import attachmentsEN from '@/locales/en/attachments.json';
 import accessLogsEN from '@/locales/en/accessLogs.json';
+import calendarEN from '@/locales/en/calendar.json';
 
 i18n
   .use(LanguageDetector) // Detect user language
@@ -57,6 +59,7 @@ i18n
         notfound: notfoundIT,
         attachments: attachmentsIT,
         'access-logs': accessLogsIT,
+        calendar: calendarIT,
       },
       en: {
         common: commonEN,
@@ -74,6 +77,7 @@ i18n
         notfound: notfoundEN,
         attachments: attachmentsEN,
         'access-logs': accessLogsEN,
+        calendar: calendarEN,
       },
     },
     fallbackLng: 'en',

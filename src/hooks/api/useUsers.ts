@@ -104,3 +104,20 @@ export function useDeleteUser() {
     },
   });
 }
+
+// Update calendar colour ('me' for the current user, or a user id for ADMIN/OWNER)
+export function useUpdateCalendarColor() {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: ({ id, calendarColor }: { id: string | 'me'; calendarColor: string }) =>
+      usersApi.updateCalendarColor(id, calendarColor),
+    onSuccess: (data) => {
+      if (data?.id) {
+        queryClient.setQueryData(usersKeys.detail(data.id), data);
+      }
+      queryClient.invalidateQueries({ queryKey: usersKeys.lists() });
+      queryClient.invalidateQueries({ queryKey: ['calendar-events'] });
+    },
+  });
+}

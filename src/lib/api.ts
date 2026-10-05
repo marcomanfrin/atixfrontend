@@ -2,6 +2,7 @@
 // This will connect to your backend
 
 import { PaginatedResponse } from '@/types';
+import type { CalendarEvent, CalendarEventInput } from '@/types/calendar';
 import * as Sentry from '@sentry/react';
 import i18n from '@/lib/i18n';
 
@@ -209,6 +210,36 @@ export const usersApi = {
   },
   delete: (id: string) =>
     apiRequest<void>(`/users/${id}`, { method: 'DELETE' }),
+  updateCalendarColor: (id: string | 'me', calendarColor: string) =>
+    apiRequest<any>(`/users/${id}/calendar-color`, {
+      method: 'PATCH',
+      body: JSON.stringify({ calendarColor }),
+    }),
+};
+
+// Calendar API
+export const calendarApi = {
+  getEvents: (params: { from: string; to: string; mine?: boolean; participantIds?: string[] }) => {
+    const searchParams = new URLSearchParams({ from: params.from, to: params.to });
+    if (params.mine) {
+      searchParams.append('mine', 'true');
+    }
+    params.participantIds?.forEach((id) => searchParams.append('participantIds', id));
+    return apiRequest<CalendarEvent[]>(`/calendar-events?${searchParams.toString()}`);
+  },
+  getById: (id: string) => apiRequest<CalendarEvent>(`/calendar-events/${id}`),
+  create: (data: CalendarEventInput) =>
+    apiRequest<CalendarEvent>('/calendar-events', {
+      method: 'POST',
+      body: JSON.stringify(data),
+    }),
+  update: (id: string, data: CalendarEventInput) =>
+    apiRequest<CalendarEvent>(`/calendar-events/${id}`, {
+      method: 'PUT',
+      body: JSON.stringify(data),
+    }),
+  delete: (id: string) =>
+    apiRequest<void>(`/calendar-events/${id}`, { method: 'DELETE' }),
 };
 
 // Clients API

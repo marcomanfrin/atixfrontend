@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { User, Mail, Lock, Camera, Save } from 'lucide-react';
+import { User, Mail, Lock, Camera, Save, Palette } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -9,16 +9,19 @@ import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Separator } from '@/components/ui/separator';
 import { useToast } from '@/hooks/use-toast';
 import { useAuth } from '@/contexts/AuthContext';
-import { useUpdateUser, useUpdatePassword, useUploadAvatar, useUsers } from '@/hooks/api';
+import { useUpdateUser, useUpdatePassword, useUploadAvatar, useUsers, useUpdateCalendarColor } from '@/hooks/api';
+import { ColorPicker } from '@/components/calendar/ColorPicker';
+import { isHexColor } from '@/lib/color';
 
 export default function ProfilePage() {
   const { toast } = useToast();
   const { user, updateUser: updateAuthUser } = useAuth();
-  const { t } = useTranslation(['profile', 'users']);
+  const { t } = useTranslation(['profile', 'users', 'calendar']);
 
   const updateUser = useUpdateUser();
   const updatePassword = useUpdatePassword();
   const uploadAvatar = useUploadAvatar();
+  const updateCalendarColor = useUpdateCalendarColor();
 
   // Fetch users to get the current user's ID if not available
   const { data: usersData } = useUsers();
@@ -60,6 +63,42 @@ export default function ProfilePage() {
     confirmPassword: '',
   });
   
+  const savedCalendarColor = usersData?.find((u) => u.id === currentUserId)?.calendarColor ?? '';
+  const [calendarColor, setCalendarColor] = useState('');
+
+  useEffect(() => {
+    setCalendarColor(savedCalendarColor);
+  }, [savedCalendarColor]);
+
+  const handleCalendarColorUpdate = () => {
+    if (!isHexColor(calendarColor)) {
+      toast({
+        title: t('common:titles.validationError'),
+        description: t('calendar:color.invalid'),
+        variant: 'destructive',
+      });
+      return;
+    }
+    updateCalendarColor.mutate(
+      { id: 'me', calendarColor },
+      {
+        onSuccess: () => {
+          toast({
+            title: t('common:titles.success'),
+            description: t('calendar:color.updated'),
+          });
+        },
+        onError: (error: Error) => {
+          toast({
+            title: t('common:titles.error'),
+            description: error.message,
+            variant: 'destructive',
+          });
+        },
+      }
+    );
+  };
+
   const [isUpdatingProfile, setIsUpdatingProfile] = useState(false);
   const [isUpdatingPassword, setIsUpdatingPassword] = useState(false);
   const [isUploadingAvatar, setIsUploadingAvatar] = useState(false);
@@ -329,6 +368,33 @@ export default function ProfilePage() {
           <Button onClick={handleProfileUpdate} disabled={isUpdatingProfile} className="w-full">
             <Save className="mr-2 h-4 w-4" />
             {isUpdatingProfile ? t('common:messages.saving') : t('actions.save')}
+          </Button>
+        </CardContent>
+      </Card>
+
+      {/* Calendar colour */}
+      <Card>
+        <CardHeader>
+          <CardTitle className="flex items-center gap-2">
+            <Palette className="h-5 w-5" />
+            {t('calendar:color.title')}
+          </CardTitle>
+          <CardDescription>{t('calendar:color.description')}</CardDescription>
+        </CardHeader>
+        <CardContent className="space-y-4">
+          <ColorPicker
+            value={calendarColor}
+            onChange={setCalendarColor}
+            disabled={updateCalendarColor.isPending}
+          />
+          <Button
+            onClick={handleCalendarColorUpdate}
+            disabled={updateCalendarColor.isPending || calendarColor.toUpperCase() === savedCalendarColor.toUpperCase()}
+            variant="outline"
+            className="w-full"
+          >
+            <Save className="mr-2 h-4 w-4" />
+            {updateCalendarColor.isPending ? t('common:messages.saving') : t('calendar:color.save')}
           </Button>
         </CardContent>
       </Card>

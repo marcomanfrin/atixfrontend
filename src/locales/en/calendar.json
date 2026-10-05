@@ -1,0 +1,97 @@
+{
+  "title": "Calendar",
+  "subtitle": "Team commitments: who does what and when",
+  "newEvent": "New commitment",
+  "views": {
+    "month": "Month",
+    "gantt": "Gantt"
+  },
+  "spans": {
+    "week": "Week",
+    "twoWeeks": "Two weeks",
+    "month": "Month"
+  },
+  "navigation": {
+    "previous": "Previous",
+    "next": "Next",
+    "today": "Today"
+  },
+  "filters": {
+    "onlyMine": "Only my commitments",
+    "participants": "People",
+    "allParticipants": "Everyone",
+    "selectedParticipants_one": "{{count}} person",
+    "selectedParticipants_other": "{{count}} people",
+    "clear": "Clear filter",
+    "searchUser": "Search person...",
+    "noUser": "No person found"
+  },
+  "legend": {
+    "title": "Legend"
+  },
+  "month": {
+    "more": "+{{count}} more",
+    "allDay": "All day"
+  },
+  "gantt": {
+    "person": "Person",
+    "noUsers": "No people to show"
+  },
+  "dialog": {
+    "createTitle": "New commitment",
+    "editTitle": "Edit commitment",
+    "viewTitle": "Commitment details",
+    "createDescription": "Record a commitment for yourself, a colleague or a group.",
+    "editDescription": "Update the commitment details.",
+    "viewDescription": "Only the creator or an administrator can edit this commitment.",
+    "title": "Title",
+    "titlePlaceholder": "e.g. Plant inspection",
+    "description": "Description",
+    "location": "Location",
+    "locationPlaceholder": "e.g. Pordenone, via Roma 1",
+    "allDay": "All day",
+    "start": "Start",
+    "end": "End",
+    "startDate": "Start date",
+    "endDate": "End date",
+    "startTime": "Start time",
+    "endTime": "End time",
+    "participants": "Participants",
+    "addParticipants": "Add participants",
+    "work": "Linked work order",
+    "workPlaceholder": "No work order",
+    "searchWork": "Search work order...",
+    "noWork": "No work order found",
+    "removeWork": "Unlink work order",
+    "openWork": "Open work order",
+    "createdBy": "Created by",
+    "when": "When",
+    "save": "Save",
+    "saving": "Saving...",
+    "delete": "Delete",
+    "deleteTitle": "Delete this commitment?",
+    "deleteDescription": "\"{{title}}\" will be removed from every participant's calendar.",
+    "readOnly": "Read only"
+  },
+  "validation": {
+    "titleRequired": "Title is required",
+    "titleTooLong": "Title cannot exceed 200 characters",
+    "participantsRequired": "Select at least one participant",
+    "datesRequired": "Enter start and end date and time",
+    "endBeforeStart": "End cannot be before start"
+  },
+  "messages": {
+    "created": "Commitment created",
+    "updated": "Commitment updated",
+    "deleted": "Commitment deleted",
+    "loadError": "Unable to load commitments"
+  },
+  "color": {
+    "title": "Calendar colour",
+    "description": "The colour your commitments use in the team calendar.",
+    "custom": "Custom",
+    "save": "Save colour",
+    "updated": "Colour updated",
+    "invalid": "Use the #RRGGBB format"
+  }
+}

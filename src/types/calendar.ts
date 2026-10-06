@@ -41,5 +41,5 @@ export interface CalendarEventInput {
   workId?: string | null;
 }
 
-export type CalendarView = 'month' | 'gantt';
+export type CalendarView = 'month' | 'week' | 'gantt';
 export type GanttSpan = 'week' | 'twoWeeks' | 'month';

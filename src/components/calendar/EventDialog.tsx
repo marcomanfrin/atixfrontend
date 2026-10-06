@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { addDays, format } from 'date-fns';
+import { addDays, addHours, format } from 'date-fns';
 import type { Locale } from 'date-fns';
 import { Link } from 'react-router-dom';
 import { Briefcase, Clock, ExternalLink, MapPin, Trash2, User as UserIcon, Users } from 'lucide-react';
@@ -41,6 +41,9 @@ import { formatEventTime, parseLocal } from './calendarUtils';
 export interface EventDialogDefaults {
   date: Date;
   participantIds: string[];
+  // true when `date` carries the chosen start time (week view slot): the event lasts one hour
+  timed?: boolean;
+  allDay?: boolean;
 }
 
 interface EventDialogProps {
@@ -88,15 +91,16 @@ function formFromEvent(event: CalendarEvent): FormState {
 
 function formFromDefaults(defaults: EventDialogDefaults): FormState {
   const day = format(defaults.date, DATE);
+  const end = addHours(defaults.date, 1);
   return {
     title: '',
     description: '',
     location: '',
-    allDay: false,
+    allDay: defaults.allDay ?? false,
     startDate: day,
-    startTime: '09:00',
-    endDate: day,
-    endTime: '10:00',
+    startTime: defaults.timed ? format(defaults.date, TIME) : '09:00',
+    endDate: defaults.timed ? format(end, DATE) : day,
+    endTime: defaults.timed ? format(end, TIME) : '10:00',
     participantIds: defaults.participantIds,
     work: null,
   };

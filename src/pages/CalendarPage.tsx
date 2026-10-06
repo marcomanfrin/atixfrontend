@@ -7,6 +7,7 @@ import { LoadingSpinner } from '@/components/LoadingSpinner';
 import { CalendarToolbar } from '@/components/calendar/CalendarToolbar';
 import { MonthView } from '@/components/calendar/MonthView';
 import { GanttView } from '@/components/calendar/GanttView';
+import { WeekView } from '@/components/calendar/WeekView';
 import { UserColorLegend } from '@/components/calendar/UserColorLegend';
 import { EventDialog, EventDialogDefaults } from '@/components/calendar/EventDialog';
 import {
@@ -46,7 +47,10 @@ export default function CalendarPage() {
   const { user: currentUser } = useAuth();
   const locale = getDateFnsLocale(i18n.language);
 
-  const [view, setView] = useState<CalendarView>(() => (readStorage(VIEW_KEY) === 'gantt' ? 'gantt' : 'month'));
+  const [view, setView] = useState<CalendarView>(() => {
+    const stored = readStorage(VIEW_KEY);
+    return stored === 'gantt' || stored === 'week' ? stored : 'month';
+  });
   const [onlyMine, setOnlyMine] = useState<boolean>(() => readStorage(ONLY_MINE_KEY) === 'true');
   const [span, setSpan] = useState<GanttSpan>('week');
   const [anchor, setAnchor] = useState(() => new Date());
@@ -83,11 +87,12 @@ export default function CalendarPage() {
     return result;
   }, [users, onlyMine, participantIds, currentUser?.id]);
 
-  const openCreate = (date: Date, participants?: string[]) => {
+  const openCreate = (date: Date, participants?: string[], options?: Pick<EventDialogDefaults, 'timed' | 'allDay'>) => {
     setSelectedEvent(null);
     setDialogDefaults({
       date,
       participantIds: participants ?? (currentUser?.id ? [currentUser.id] : []),
+      ...options,
     });
     setDialogOpen(true);
   };
@@ -138,6 +143,15 @@ export default function CalendarPage() {
           events={events}
           locale={locale}
           onDayClick={(day) => openCreate(day)}
+          onEventClick={openEvent}
+        />
+      ) : view === 'week' ? (
+        <WeekView
+          range={range}
+          events={events}
+          locale={locale}
+          onSlotClick={(start) => openCreate(start, undefined, { timed: true })}
+          onAllDayClick={(day) => openCreate(day, undefined, { allDay: true })}
           onEventClick={openEvent}
         />
       ) : (

@@ -1,0 +1,193 @@
+{
+  "title": "Rapportini",
+  "subtitle": "Rapporti di intervento firmati dal cliente",
+  "newButton": "Nuovo rapportino",
+  "status": {
+    "DRAFT": "Bozza",
+    "AWAITING_SIGNATURE": "In attesa di firma",
+    "SIGNED": "Firmato",
+    "VOID": "Annullato"
+  },
+  "workState": {
+    "IN_PROGRESS": "Lavori in corso",
+    "COMPLETED": "Conclusione lavori"
+  },
+  "interventionType": {
+    "maintenance": "Manutenzione da contratto",
+    "callOut": "Intervento su chiamata",
+    "quote": "Intervento su offerta / ordine",
+    "warranty": "Intervento in garanzia"
+  },
+  "filters": {
+    "title": "Filtri",
+    "status": "Stato",
+    "allStatuses": "Tutti gli stati",
+    "technician": "Tecnico",
+    "allTechnicians": "Tutti i tecnici",
+    "dateFrom": "Dal",
+    "dateTo": "Al",
+    "reset": "Azzera filtri"
+  },
+  "list": {
+    "number": "N°",
+    "date": "Data",
+    "work": "Commessa",
+    "client": "Cliente",
+    "technician": "Tecnico",
+    "hours": "Ore",
+    "status": "Stato",
+    "empty": "Nessun rapportino trovato",
+    "count": "{{count}} rapportini"
+  },
+  "fields": {
+    "number": "N° rapporto",
+    "interventionDate": "Data intervento",
+    "technician": "Tecnico",
+    "work": "Commessa",
+    "client": "Cliente",
+    "clientReference": "Referente",
+    "plant": "Impianto / Sede",
+    "orderNumber": "Ordine N°",
+    "interventionType": "Tipo intervento",
+    "description": "Descrizione intervento",
+    "descriptionPlaceholder": "Descrivi il lavoro svolto",
+    "activities": "Attività svolte",
+    "materials": "Materiali utilizzati",
+    "workHours": "Ore lavoro",
+    "travelHours": "Ore viaggio",
+    "totalHours": "Totale ore",
+    "travelKm": "Km trasferta",
+    "meal": "Pasto",
+    "parking": "Parcheggio",
+    "workState": "Stato lavoro",
+    "language": "Lingua del documento",
+    "createdBy": "Creato da",
+    "selectPlaceholder": "Seleziona...",
+    "none": "Nessuno"
+  },
+  "checklist": {
+    "notePlaceholder": "Nota (facoltativa)",
+    "addCustom": "Aggiungi voce",
+    "customPlaceholder": "Altra attività svolta",
+    "empty": "Nessuna attività selezionata"
+  },
+  "materials": {
+    "descriptionPlaceholder": "Descrizione materiale",
+    "quantity": "Q.tà",
+    "add": "Aggiungi materiale",
+    "empty": "Nessun materiale utilizzato",
+    "remove": "Rimuovi"
+  },
+  "wizard": {
+    "titleNew": "Compila rapportino",
+    "steps": {
+      "data": "Dati",
+      "activities": "Lavori",
+      "hours": "Ore",
+      "signature": "Firma"
+    },
+    "back": "Indietro",
+    "next": "Avanti",
+    "save": "Salva bozza",
+    "saved": "Bozza salvata",
+    "close": "Chiudi",
+    "notEditable": "Questo rapportino non è più modificabile."
+  },
+  "signature": {
+    "title": "Firma del cliente",
+    "modeHere": "Firma qui",
+    "modeRemote": "Invia link al cliente",
+    "signerName": "Nome e cognome del firmatario",
+    "signerNamePlaceholder": "Es. Mario Rossi",
+    "padLabel": "Area firma",
+    "placeholder": "Firma qui con il dito o la penna",
+    "undo": "Annulla tratto",
+    "clear": "Cancella",
+    "required": "La firma è obbligatoria",
+    "nameRequired": "Il nome del firmatario è obbligatorio",
+    "privacyTitle": "Informativa sul trattamento dei dati (art. 13 GDPR)",
+    "privacyText": "I dati personali (nome, firma grafometrica) sono raccolti da ATIX S.r.l. esclusivamente per la gestione documentale degli interventi tecnici, ai sensi dell'art. 6.1(b) del Regolamento UE 2016/679 (GDPR). I dati non saranno ceduti a terzi né utilizzati per finalità diverse da quella indicata. Il documento firmato sarà conservato in forma digitale per il periodo previsto dagli obblighi di legge.",
+    "privacyAccept": "Ho letto l'informativa e acconsento al trattamento dei dati",
+    "privacyRequired": "È necessario accettare l'informativa",
+    "submit": "Firma e chiudi rapportino",
+    "submitting": "Firma in corso...",
+    "signed": "Rapportino firmato",
+    "signedDescription": "Il documento PDF è stato generato e archiviato.",
+    "signedBy": "Firmato da {{name}} il {{date}}",
+    "remoteSource": "firma remota",
+    "confirmTitle": "Confermi la firma?",
+    "confirmDescription": "Dopo la firma il rapportino non sarà più modificabile e le ore verranno registrate sulla commessa."
+  },
+  "remote": {
+    "expiry": "Validità del link",
+    "minutes15": "15 minuti",
+    "minutes60": "1 ora",
+    "minutes1440": "24 ore",
+    "create": "Genera link di firma",
+    "linkTitle": "Link di firma",
+    "linkDescription": "Invia questo link al cliente. È monouso e scade il {{date}}. Non potrà essere mostrato di nuovo.",
+    "copy": "Copia link",
+    "copied": "Link copiato",
+    "share": "Condividi",
+    "waiting": "In attesa della firma del cliente fino al {{date}}",
+    "revoke": "Revoca link",
+    "revoked": "Link revocato: il rapportino è di nuovo modificabile"
+  },
+  "detail": {
+    "back": "Rapportini",
+    "edit": "Modifica",
+    "continue": "Completa e firma",
+    "delete": "Elimina",
+    "deleteTitle": "Eliminare la bozza?",
+    "deleteDescription": "La bozza {{number}} verrà eliminata definitivamente.",
+    "deleted": "Bozza eliminata",
+    "downloadPdf": "Apri PDF",
+    "void": "Annulla rapportino",
+    "voidTitle": "Annullare il rapportino firmato?",
+    "voidDescription": "Il rapportino {{number}} verrà annullato e le sue ore non conteranno più sulla commessa. Il PDF resta consultabile. Per correggerlo crea un nuovo rapportino.",
+    "voided": "Rapportino annullato",
+    "voidedBanner": "Annullato da {{name}} il {{date}}",
+    "reissue": "Crea rapportino sostitutivo",
+    "replaces": "Sostituisce il rapportino {{number}}",
+    "readOnly": "Rapportino in sola lettura",
+    "openWork": "Apri commessa",
+    "signatureSection": "Firma",
+    "noSignature": "Non ancora firmato",
+    "integrity": "Impronta SHA-256 del documento"
+  },
+  "work": {
+    "title": "Rapportini",
+    "empty": "Nessun rapportino per questa commessa",
+    "new": "Nuovo rapportino",
+    "generatedEntry": "Ore registrate dal rapportino firmato: per correggerle annulla il rapportino",
+    "openRapportino": "Apri rapportino"
+  },
+  "newDialog": {
+    "title": "Nuovo rapportino",
+    "description": "Scegli la commessa su cui hai lavorato",
+    "work": "Commessa",
+    "searchPlaceholder": "Cerca commessa...",
+    "create": "Crea"
+  },
+  "public": {
+    "title": "Firma rapporto di intervento",
+    "intro": "Verifica il rapporto di intervento e firma per approvare le attività eseguite.",
+    "expiresAt": "Link valido fino al {{date}}",
+    "invalidTitle": "Link non valido",
+    "invalidText": "Questo link di firma non è valido, è già stato usato oppure è scaduto. Contatta il tecnico per riceverne uno nuovo.",
+    "rateLimited": "Troppe richieste. Riprova tra qualche minuto.",
+    "error": "Si è verificato un errore. Riprova.",
+    "successTitle": "Grazie!",
+    "successText": "Il rapporto di intervento è stato firmato correttamente. Puoi chiudere questa pagina."
+  },
+  "messages": {
+    "loading": "Caricamento rapportini...",
+    "error": "Errore nel caricamento",
+    "createError": "Impossibile creare il rapportino",
+    "saveError": "Impossibile salvare il rapportino",
+    "pdfError": "Impossibile aprire il documento",
+    "validationHours": "Ore e km non possono essere negativi",
+    "validationMaterials": "Ogni materiale deve avere descrizione e quantità maggiore di zero"
+  },
+  "yes": "Sì"
+}

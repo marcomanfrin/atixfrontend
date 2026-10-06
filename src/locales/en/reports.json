@@ -1,0 +1,193 @@
+{
+  "title": "Service reports",
+  "subtitle": "Intervention reports signed by the customer",
+  "newButton": "New report",
+  "status": {
+    "DRAFT": "Draft",
+    "AWAITING_SIGNATURE": "Awaiting signature",
+    "SIGNED": "Signed",
+    "VOID": "Void"
+  },
+  "workState": {
+    "IN_PROGRESS": "Work in progress",
+    "COMPLETED": "Work completed"
+  },
+  "interventionType": {
+    "maintenance": "Contract maintenance",
+    "callOut": "Call-out",
+    "quote": "Quote / order",
+    "warranty": "Warranty"
+  },
+  "filters": {
+    "title": "Filters",
+    "status": "Status",
+    "allStatuses": "All statuses",
+    "technician": "Technician",
+    "allTechnicians": "All technicians",
+    "dateFrom": "From",
+    "dateTo": "To",
+    "reset": "Reset filters"
+  },
+  "list": {
+    "number": "No.",
+    "date": "Date",
+    "work": "Work order",
+    "client": "Client",
+    "technician": "Technician",
+    "hours": "Hours",
+    "status": "Status",
+    "empty": "No reports found",
+    "count": "{{count}} reports"
+  },
+  "fields": {
+    "number": "Report no.",
+    "interventionDate": "Intervention date",
+    "technician": "Technician",
+    "work": "Work order",
+    "client": "Client",
+    "clientReference": "Contact",
+    "plant": "Plant / Site",
+    "orderNumber": "Order no.",
+    "interventionType": "Intervention type",
+    "description": "Intervention description",
+    "descriptionPlaceholder": "Describe the work performed",
+    "activities": "Activities performed",
+    "materials": "Materials used",
+    "workHours": "Work hours",
+    "travelHours": "Travel hours",
+    "totalHours": "Total hours",
+    "travelKm": "Travel km",
+    "meal": "Meal",
+    "parking": "Parking",
+    "workState": "Work status",
+    "language": "Document language",
+    "createdBy": "Created by",
+    "selectPlaceholder": "Select...",
+    "none": "None"
+  },
+  "checklist": {
+    "notePlaceholder": "Note (optional)",
+    "addCustom": "Add item",
+    "customPlaceholder": "Other activity performed",
+    "empty": "No activity selected"
+  },
+  "materials": {
+    "descriptionPlaceholder": "Material description",
+    "quantity": "Qty",
+    "add": "Add material",
+    "empty": "No materials used",
+    "remove": "Remove"
+  },
+  "wizard": {
+    "titleNew": "Fill in report",
+    "steps": {
+      "data": "Data",
+      "activities": "Work",
+      "hours": "Hours",
+      "signature": "Signature"
+    },
+    "back": "Back",
+    "next": "Next",
+    "save": "Save draft",
+    "saved": "Draft saved",
+    "close": "Close",
+    "notEditable": "This report can no longer be edited."
+  },
+  "signature": {
+    "title": "Customer signature",
+    "modeHere": "Sign here",
+    "modeRemote": "Send link to customer",
+    "signerName": "Signer full name",
+    "signerNamePlaceholder": "e.g. John Smith",
+    "padLabel": "Signature area",
+    "placeholder": "Sign here with your finger or pen",
+    "undo": "Undo stroke",
+    "clear": "Clear",
+    "required": "A signature is required",
+    "nameRequired": "The signer name is required",
+    "privacyTitle": "Privacy notice (art. 13 GDPR)",
+    "privacyText": "Personal data (name, handwritten signature) is collected by ATIX S.r.l. solely for the document management of technical interventions, under art. 6.1(b) of EU Regulation 2016/679 (GDPR). It will not be disclosed to third parties or used for other purposes. The signed document will be kept in digital form for the period required by law.",
+    "privacyAccept": "I have read the notice and consent to the processing of my data",
+    "privacyRequired": "You must accept the privacy notice",
+    "submit": "Sign and close report",
+    "submitting": "Signing...",
+    "signed": "Report signed",
+    "signedDescription": "The PDF document has been generated and archived.",
+    "signedBy": "Signed by {{name}} on {{date}}",
+    "remoteSource": "remote signature",
+    "confirmTitle": "Confirm signature?",
+    "confirmDescription": "After signing, the report can no longer be edited and its hours will be recorded on the work order."
+  },
+  "remote": {
+    "expiry": "Link validity",
+    "minutes15": "15 minutes",
+    "minutes60": "1 hour",
+    "minutes1440": "24 hours",
+    "create": "Generate signing link",
+    "linkTitle": "Signing link",
+    "linkDescription": "Send this link to the customer. It is single-use and expires on {{date}}. It cannot be shown again.",
+    "copy": "Copy link",
+    "copied": "Link copied",
+    "share": "Share",
+    "waiting": "Waiting for the customer signature until {{date}}",
+    "revoke": "Revoke link",
+    "revoked": "Link revoked: the report can be edited again"
+  },
+  "detail": {
+    "back": "Service reports",
+    "edit": "Edit",
+    "continue": "Complete and sign",
+    "delete": "Delete",
+    "deleteTitle": "Delete the draft?",
+    "deleteDescription": "Draft {{number}} will be permanently deleted.",
+    "deleted": "Draft deleted",
+    "downloadPdf": "Open PDF",
+    "void": "Void report",
+    "voidTitle": "Void the signed report?",
+    "voidDescription": "Report {{number}} will be voided and its hours will no longer count on the work order. The PDF remains available. To correct it, create a new report.",
+    "voided": "Report voided",
+    "voidedBanner": "Voided by {{name}} on {{date}}",
+    "reissue": "Create replacement report",
+    "replaces": "Replaces report {{number}}",
+    "readOnly": "Read-only report",
+    "openWork": "Open work order",
+    "signatureSection": "Signature",
+    "noSignature": "Not signed yet",
+    "integrity": "Document SHA-256 fingerprint"
+  },
+  "work": {
+    "title": "Service reports",
+    "empty": "No reports for this work order",
+    "new": "New report",
+    "generatedEntry": "Hours recorded by the signed report: void the report to correct them",
+    "openRapportino": "Open report"
+  },
+  "newDialog": {
+    "title": "New report",
+    "description": "Choose the work order you worked on",
+    "work": "Work order",
+    "searchPlaceholder": "Search work order...",
+    "create": "Create"
+  },
+  "public": {
+    "title": "Sign intervention report",
+    "intro": "Review the intervention report and sign to approve the work performed.",
+    "expiresAt": "Link valid until {{date}}",
+    "invalidTitle": "Invalid link",
+    "invalidText": "This signing link is not valid, has already been used or has expired. Please contact the technician for a new one.",
+    "rateLimited": "Too many requests. Please try again in a few minutes.",
+    "error": "Something went wrong. Please try again.",
+    "successTitle": "Thank you!",
+    "successText": "The intervention report has been signed successfully. You can close this page."
+  },
+  "messages": {
+    "loading": "Loading reports...",
+    "error": "Error while loading",
+    "createError": "Unable to create the report",
+    "saveError": "Unable to save the report",
+    "pdfError": "Unable to open the document",
+    "validationHours": "Hours and km cannot be negative",
+    "validationMaterials": "Each material needs a description and a quantity greater than zero"
+  },
+  "yes": "Yes"
+}

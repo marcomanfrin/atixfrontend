@@ -4,6 +4,7 @@
   "newEvent": "New commitment",
   "views": {
     "month": "Month",
+    "week": "Week",
     "gantt": "Gantt"
   },
   "spans": {
@@ -31,6 +32,9 @@
   },
   "month": {
     "more": "+{{count}} more",
+    "allDay": "All day"
+  },
+  "week": {
     "allDay": "All day"
   },
   "gantt": {

@@ -38,6 +38,10 @@ export function getVisibleRange(view: CalendarView, anchor: Date, span: GanttSpa
     const end = addDays(startOfDay(endOfWeek(endOfMonth(anchor), WEEK_OPTIONS)), 1);
     return { start, end };
   }
+  if (view === 'week') {
+    const start = startOfWeek(anchor, WEEK_OPTIONS);
+    return { start, end: addDays(start, 7) };
+  }
   switch (span) {
     case 'week': {
       const start = startOfWeek(anchor, WEEK_OPTIONS);
@@ -55,6 +59,9 @@ export function getVisibleRange(view: CalendarView, anchor: Date, span: GanttSpa
 }
 
 export function shiftAnchor(view: CalendarView, anchor: Date, span: GanttSpan, direction: 1 | -1): Date {
+  if (view === 'week') {
+    return addWeeks(anchor, direction);
+  }
   if (view === 'month' || span === 'month') {
     return addMonths(anchor, direction);
   }
@@ -62,7 +69,7 @@ export function shiftAnchor(view: CalendarView, anchor: Date, span: GanttSpan, d
 }
 
 export function getPeriodLabel(view: CalendarView, anchor: Date, span: GanttSpan, locale: Locale): string {
-  if (view === 'month' || span === 'month') {
+  if (view === 'month' || (view === 'gantt' && span === 'month')) {
     return format(anchor, 'LLLL yyyy', { locale });
   }
   const { start, end } = getVisibleRange(view, anchor, span);
@@ -90,6 +97,9 @@ export function compareEvents(a: CalendarEvent, b: CalendarEvent): number {
   if (a.allDay !== b.allDay) return a.allDay ? -1 : 1;
   return a.startAt.localeCompare(b.startAt) || a.endAt.localeCompare(b.endAt) || a.title.localeCompare(b.title);
 }
+
+// Minutes since local midnight, read from the wall clock (DST-safe)
+export const minuteOfDay = (date: Date) => date.getHours() * 60 + date.getMinutes();
 
 // Position in "days since range start", with fractional day for the time of day (DST-safe)
 export function dayOffset(date: Date, rangeStart: Date): number {

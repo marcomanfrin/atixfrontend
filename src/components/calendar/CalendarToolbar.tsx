@@ -1,4 +1,4 @@
-import { CalendarDays, ChevronLeft, ChevronRight, GanttChartSquare, Plus } from 'lucide-react';
+import { CalendarDays, CalendarRange, ChevronLeft, ChevronRight, GanttChartSquare, Plus } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { Button } from '@/components/ui/button';
 import { Label } from '@/components/ui/label';
@@ -60,6 +60,10 @@ export function CalendarToolbar(props: CalendarToolbarProps) {
           <ToggleGroupItem value="month" aria-label={t('views.month')} className="gap-2 px-3">
             <CalendarDays className="h-4 w-4" />
             {t('views.month')}
+          </ToggleGroupItem>
+          <ToggleGroupItem value="week" aria-label={t('views.week')} className="gap-2 px-3">
+            <CalendarRange className="h-4 w-4" />
+            {t('views.week')}
           </ToggleGroupItem>
           <ToggleGroupItem value="gantt" aria-label={t('views.gantt')} className="gap-2 px-3">
             <GanttChartSquare className="h-4 w-4" />

@@ -32,6 +32,7 @@ const RapportiniPage = lazy(() => import("./pages/RapportiniPage"));
 const RapportinoDetailPage = lazy(() => import("./pages/RapportinoDetailPage"));
 const RapportinoWizardPage = lazy(() => import("./pages/RapportinoWizardPage"));
 const PublicSignPage = lazy(() => import("./pages/PublicSignPage"));
+const CalendarPage = lazy(() => import("./pages/CalendarPage"));
 const NotFound = lazy(() => import("./pages/NotFound"));
 
 const queryClient = new QueryClient({
@@ -101,6 +102,7 @@ const App = () => (
                               <Suspense fallback={<LoadingSpinner />}>
                                 <Routes>
                                   <Route path="/" element={<Dashboard />} />
+                                  <Route path="/calendar" element={<CalendarPage />} />
                                   <Route path="/tickets" element={<TicketsPage />} />
                                   <Route path="/tickets/:id" element={<TicketDetailPage />} />
                                   <Route path="/works" element={<WorksPage />} />

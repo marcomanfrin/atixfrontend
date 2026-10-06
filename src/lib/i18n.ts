@@ -19,6 +19,7 @@ import notfoundIT from '@/locales/it/notfound.json';
 import attachmentsIT from '@/locales/it/attachments.json';
 import accessLogsIT from '@/locales/it/accessLogs.json';
 import reportsIT from '@/locales/it/reports.json';
+import calendarIT from '@/locales/it/calendar.json';
 
 // Import English translations
 import commonEN from '@/locales/en/common.json';
@@ -37,6 +38,7 @@ import notfoundEN from '@/locales/en/notfound.json';
 import attachmentsEN from '@/locales/en/attachments.json';
 import accessLogsEN from '@/locales/en/accessLogs.json';
 import reportsEN from '@/locales/en/reports.json';
+import calendarEN from '@/locales/en/calendar.json';
 
 i18n
   .use(LanguageDetector) // Detect user language
@@ -60,6 +62,7 @@ i18n
         attachments: attachmentsIT,
         'access-logs': accessLogsIT,
         reports: reportsIT,
+        calendar: calendarIT,
       },
       en: {
         common: commonEN,
@@ -78,6 +81,7 @@ i18n
         attachments: attachmentsEN,
         'access-logs': accessLogsEN,
         reports: reportsEN,
+        calendar: calendarEN,
       },
     },
     fallbackLng: 'en',

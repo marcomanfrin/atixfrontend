@@ -18,6 +18,7 @@ export interface User {
   email: string;
   role: UserRole;
   type: UserType;
+  calendarColor?: string;
 }
 
 export interface TechnicianUser extends User {

@@ -11,6 +11,7 @@ import {
   User,
   ShieldCheck,
   ClipboardSignature,
+  CalendarDays,
 } from 'lucide-react';
 import { NavLink, useLocation, useNavigate } from 'react-router-dom';
 import {
@@ -44,6 +45,7 @@ export function AppSidebar() {
     { title: t('menu.dashboard'), url: '/', icon: LayoutDashboard },
     { title: t('menu.works'), url: '/works', icon: Briefcase },
     { title: t('menu.reports'), url: '/reports', icon: ClipboardSignature },
+    { title: t('menu.calendar'), url: '/calendar', icon: CalendarDays },
     { title: t('menu.plants'), url: '/plants', icon: Factory },
     { title: t('menu.tickets'), url: '/tickets', icon: Ticket },
   ];

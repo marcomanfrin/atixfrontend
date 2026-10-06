@@ -1,0 +1,97 @@
+{
+  "title": "Calendario",
+  "subtitle": "Impegni del team: chi fa cosa e quando",
+  "newEvent": "Nuovo impegno",
+  "views": {
+    "month": "Mese",
+    "gantt": "Gantt"
+  },
+  "spans": {
+    "week": "Settimana",
+    "twoWeeks": "Due settimane",
+    "month": "Mese"
+  },
+  "navigation": {
+    "previous": "Precedente",
+    "next": "Successivo",
+    "today": "Oggi"
+  },
+  "filters": {
+    "onlyMine": "Solo i miei impegni",
+    "participants": "Persone",
+    "allParticipants": "Tutte le persone",
+    "selectedParticipants_one": "{{count}} persona",
+    "selectedParticipants_other": "{{count}} persone",
+    "clear": "Rimuovi filtro",
+    "searchUser": "Cerca persona...",
+    "noUser": "Nessuna persona trovata"
+  },
+  "legend": {
+    "title": "Legenda"
+  },
+  "month": {
+    "more": "+{{count}} altri",
+    "allDay": "Tutto il giorno"
+  },
+  "gantt": {
+    "person": "Persona",
+    "noUsers": "Nessuna persona da mostrare"
+  },
+  "dialog": {
+    "createTitle": "Nuovo impegno",
+    "editTitle": "Modifica impegno",
+    "viewTitle": "Dettaglio impegno",
+    "createDescription": "Registra un impegno per te, per un collega o per un gruppo.",
+    "editDescription": "Aggiorna i dettagli dell'impegno.",
+    "viewDescription": "Puoi modificare questo impegno solo se l'hai creato tu o sei amministratore.",
+    "title": "Titolo",
+    "titlePlaceholder": "Es. Sopralluogo impianto",
+    "description": "Descrizione",
+    "location": "Luogo",
+    "locationPlaceholder": "Es. Pordenone, via Roma 1",
+    "allDay": "Tutto il giorno",
+    "start": "Inizio",
+    "end": "Fine",
+    "startDate": "Data inizio",
+    "endDate": "Data fine",
+    "startTime": "Ora inizio",
+    "endTime": "Ora fine",
+    "participants": "Partecipanti",
+    "addParticipants": "Aggiungi partecipanti",
+    "work": "Lavoro collegato",
+    "workPlaceholder": "Nessun lavoro",
+    "searchWork": "Cerca lavoro...",
+    "noWork": "Nessun lavoro trovato",
+    "removeWork": "Scollega lavoro",
+    "openWork": "Apri lavoro",
+    "createdBy": "Creato da",
+    "when": "Quando",
+    "save": "Salva",
+    "saving": "Salvataggio...",
+    "delete": "Elimina",
+    "deleteTitle": "Eliminare l'impegno?",
+    "deleteDescription": "L'impegno \"{{title}}\" verrà rimosso dal calendario di tutti i partecipanti.",
+    "readOnly": "Sola lettura"
+  },
+  "validation": {
+    "titleRequired": "Il titolo è obbligatorio",
+    "titleTooLong": "Il titolo non può superare i 200 caratteri",
+    "participantsRequired": "Seleziona almeno un partecipante",
+    "datesRequired": "Inserisci data e ora di inizio e fine",
+    "endBeforeStart": "La fine non può precedere l'inizio"
+  },
+  "messages": {
+    "created": "Impegno creato",
+    "updated": "Impegno aggiornato",
+    "deleted": "Impegno eliminato",
+    "loadError": "Impossibile caricare gli impegni"
+  },
+  "color": {
+    "title": "Colore calendario",
+    "description": "Il colore con cui i tuoi impegni appaiono nel calendario del team.",
+    "custom": "Personalizzato",
+    "save": "Salva colore",
+    "updated": "Colore aggiornato",
+    "invalid": "Usa il formato #RRGGBB"
+  }
+}

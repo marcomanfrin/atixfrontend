@@ -8,14 +8,14 @@ import { Textarea } from '@/components/ui/textarea';
 import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from '@/components/ui/alert-dialog';
-import { ArrowLeft, Save, Briefcase, Mail, Calendar, Edit2, X, Trash2 } from 'lucide-react';
+import { ArrowLeft, Save, Briefcase, Mail, Calendar, Edit2, X, Trash2, ExternalLink } from 'lucide-react';
 import { TicketStatus, Ticket } from '@/types';
 import { useToast } from '@/hooks/use-toast';
 import AttachmentManager from '@/components/AttachmentManager';
-import { useTicket, useUpdateTicket, useDeleteTicket } from '@/hooks/api';
+import { useTicket, useUpdateTicket, useDeleteTicket, useWork } from '@/hooks/api';
 import { LoadingSpinner } from '@/components/LoadingSpinner';
 import { formatDateTime } from '@/lib/date';
-import { StatusBadge } from '@/components/ui/status-badge';
+import { StatusBadge, getWorkStatusBadgeKey } from '@/components/ui/status-badge';
 export default function TicketDetailPage() {
   const { id } = useParams();
   const navigate = useNavigate();
@@ -23,6 +23,9 @@ export default function TicketDetailPage() {
   const { t } = useTranslation('tickets');
 
   const { data: ticket, isLoading, error } = useTicket(id!);
+  // Work already created from this ticket: link to it instead of offering to create another one
+  const linkedWorkId = ticket?.orderNumberId ?? '';
+  const { data: linkedWork } = useWork(linkedWorkId);
   const updateTicket = useUpdateTicket();
   const deleteTicket = useDeleteTicket();
 
@@ -163,10 +166,17 @@ export default function TicketDetailPage() {
                 <Edit2 className="h-4 w-4 mr-2" />
                 {t('common:actions.edit')}
               </Button>
-              <Button onClick={handleCreateWork}>
-                <Briefcase className="h-4 w-4 mr-2" />
-                {t('actions.createWork')}
-              </Button>
+              {linkedWorkId ? (
+                <Button onClick={() => navigate(`/works/${linkedWorkId}`)}>
+                  <ExternalLink className="h-4 w-4 mr-2" />
+                  {t('actions.openWork')}
+                </Button>
+              ) : (
+                <Button onClick={handleCreateWork}>
+                  <Briefcase className="h-4 w-4 mr-2" />
+                  {t('actions.createWork')}
+                </Button>
+              )}
             </> : <>
               <Button variant="outline" onClick={handleCancel}>
                 <X className="h-4 w-4 mr-2" />
@@ -254,10 +264,33 @@ export default function TicketDetailPage() {
               <CardTitle>{t('columns.actions')}</CardTitle>
             </CardHeader>
             <CardContent className="space-y-3">
-              <Button className="w-full" onClick={handleCreateWork}>
-                <Briefcase className="h-4 w-4 mr-2" />
-                {t('actions.createWorkFromTicket')}
-              </Button>
+              {linkedWorkId ? (
+                <div className="space-y-2 rounded-md border p-3">
+                  <Label className="text-muted-foreground text-xs">{t('details.linkedWork')}</Label>
+                  {linkedWork && (
+                    <div className="space-y-1">
+                      <p className="text-sm font-medium">{linkedWork.name}</p>
+                      <div className="flex items-center gap-2">
+                        <span className="text-xs text-muted-foreground">{linkedWork.orderNumber}</span>
+                        <StatusBadge
+                          status={linkedWork.status}
+                          type="work"
+                          label={t(`works:badges.${getWorkStatusBadgeKey(linkedWork.status)}`)}
+                        />
+                      </div>
+                    </div>
+                  )}
+                  <Button variant="outline" className="w-full" onClick={() => navigate(`/works/${linkedWorkId}`)}>
+                    <ExternalLink className="h-4 w-4 mr-2" />
+                    {t('actions.openWork')}
+                  </Button>
+                </div>
+              ) : (
+                <Button className="w-full" onClick={handleCreateWork}>
+                  <Briefcase className="h-4 w-4 mr-2" />
+                  {t('actions.createWorkFromTicket')}
+                </Button>
+              )}
               <AlertDialog>
                 <AlertDialogTrigger asChild>
                   <Button variant="destructive" className="w-full">

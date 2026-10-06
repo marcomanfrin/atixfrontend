@@ -57,14 +57,16 @@
     "senderEmail": "Sender Email",
     "status": "Status",
     "createdAt": "Created at",
-    "updatedAt": "Updated at"
+    "updatedAt": "Updated at",
+    "linkedWork": "Linked work"
   },
   "actions": {
     "edit": "Edit",
     "delete": "Delete",
     "changeStatus": "Change Status",
     "createWork": "Create Work",
-    "createWorkFromTicket": "Create Work from Ticket"
+    "createWorkFromTicket": "Create Work from Ticket",
+    "openWork": "Open work"
   },
   "dialogs": {
     "deleteTitle": "Delete Ticket",
